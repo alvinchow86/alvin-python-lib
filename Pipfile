@@ -1,0 +1,19 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+flake8 = "~=3.6.0"
+pytest = "~=4.0"
+pytest-mock = "~=1.10"
+tox = "~=3.6"
+pytest-cov = "~=2.6.1"
+coverage-badge = "==0.2.0"
+cryptography = "~=2.7"
+
+[packages]
+python-dateutil = ">=2.7"
+
+[requires]
+python_version = "3.7"
