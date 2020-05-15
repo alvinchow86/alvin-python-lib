@@ -5,7 +5,7 @@ __version__ = None
 exec(open('alvinchow/lib/version.py').read())
 
 setup(
-    name='alvinchow-lib',
+    name='alvin-python-lib',
     version=__version__,
     description="Useful Python utilities and libraries for app development",
     packages=[
