@@ -1,0 +1,4 @@
+[run]
+omit =
+  alvinchow/lib/version.py
+  alvinchow/lib/tests/*
