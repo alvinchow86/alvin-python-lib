@@ -10,7 +10,7 @@ from alvinchow.lib.config.exceptions import RequiredValueNotSet
 def test_config_basic(mocker):
 
     class FooConfig(Configuration):
-        DATABASE_URL = Value()
+        DB_URL = Value()
         DEBUG_LEVEL = Value('INFO')
         HARDCODED_THING = 'hard'
         INT_VALUE = IntegerValue(1)
@@ -23,7 +23,7 @@ def test_config_basic(mocker):
     config = FooConfig()
     config.setup()
 
-    assert config.DATABASE_URL is None
+    assert config.DB_URL is None
     assert config.DEBUG_LEVEL == 'INFO'
     assert config.HARDCODED_THING == 'hard'
     assert config.BOOL_VALUE is False
@@ -34,7 +34,7 @@ def test_config_basic(mocker):
     assert config.BOOL_VALUE_UNKNOWN is None
 
     env = {
-        'DATABASE_URL': 'localhost',
+        'DB_URL': 'localhost',
         'DEBUG_LEVEL': 'WARNING',
         'INT_VALUE': '123',
         'FLOAT_VALUE': '4.5',
@@ -48,7 +48,7 @@ def test_config_basic(mocker):
     config = FooConfig()
     config.setup()
 
-    assert config.DATABASE_URL == 'localhost'
+    assert config.DB_URL == 'localhost'
     assert config.DEBUG_LEVEL == 'WARNING'
     assert config.INT_VALUE == 123
     assert config.FLOAT_VALUE == 4.5
@@ -57,15 +57,15 @@ def test_config_basic(mocker):
     assert config.BOOL_VALUE_UNKNOWN is None
     assert config.LIST_VALUE == ['one', 'two', 'three']
 
-    assert config.values['DATABASE_URL'] == 'localhost'
+    assert config.values['DB_URL'] == 'localhost'
 
     # Check __repr__
-    assert 'DATABASE_URL' in repr(FooConfig.DATABASE_URL)
+    assert 'DB_URL' in repr(FooConfig.DB_URL)
 
 
 def test_required_value(mocker):
     class Config(Configuration):
-        DATABASE_URL = Value(required=True)
+        DB_URL = Value(required=True)
 
     config = Config()
 
@@ -73,13 +73,13 @@ def test_required_value(mocker):
         config.setup()
 
     env = {
-        'DATABASE_URL': 'postgres://foo:bar@something.com',
+        'DB_URL': 'postgres://foo:bar@something.com',
     }
     mocker.patch.dict(os.environ, env)
 
     config = Config()
     config.setup()
-    assert config.DATABASE_URL
+    assert config.DB_URL
 
 
 def test_required_values_override_option(mocker):
@@ -87,11 +87,11 @@ def test_required_values_override_option(mocker):
     Test alternative way to set required values
     """
     class Base(Configuration):
-        DATABASE_URL = Value()
+        DB_URL = Value()
         REDIS_URL = Value()
 
     class Production(Base):
-        required_values = ('DATABASE_URL', Base.REDIS_URL)
+        required_values = ('DB_URL', Base.REDIS_URL)
 
     config = Production()
 
@@ -99,12 +99,12 @@ def test_required_values_override_option(mocker):
         config.setup()
 
     env = {
-        'DATABASE_URL': 'postgres://foo:bar@something.com',
+        'DB_URL': 'postgres://foo:bar@something.com',
         'REDIS_URL': 'redis://something',
     }
     mocker.patch.dict(os.environ, env)
 
     config = Production()
     config.setup()
-    assert config.DATABASE_URL
+    assert config.DB_URL
     assert config.REDIS_URL

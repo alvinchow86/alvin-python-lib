@@ -3,3 +3,4 @@ omit =
   alvinchow/version.py
   alvinchow/lib/tests/*
   alvinchow/redis/tests/*
+  alvinchow/sqlalchemy/tests/*
