@@ -1,0 +1,2 @@
+class RedisConfigurationError(Exception):
+    pass

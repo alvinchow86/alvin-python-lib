@@ -1,4 +1,5 @@
 [run]
 omit =
-  alvinchow/lib/version.py
+  alvinchow/version.py
   alvinchow/lib/tests/*
+  alvinchow/redis/tests/*

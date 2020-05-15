@@ -1,12 +1,11 @@
 from setuptools import setup
 
 # get version
-__version__ = None
-exec(open('alvinchow/lib/version.py').read())
+version = '0.0.1'
 
 setup(
     name='alvin-python-lib',
-    version=__version__,
+    version=version,
     description="Useful Python utilities and libraries for app development",
     packages=[
         'alvinchow/lib',
