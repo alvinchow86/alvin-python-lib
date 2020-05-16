@@ -10,6 +10,9 @@ setup(
     packages=[
         'alvinchow/lib',
         'alvinchow/lib/config',
+        'alvinchow/redis',
+        'alvinchow/sqlalchemy',
+        'alvinchow/sqlalchemy/types',
     ],
     package_data={},
     scripts=[],
