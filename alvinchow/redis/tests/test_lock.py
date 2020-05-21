@@ -4,8 +4,15 @@ from functools import partial
 
 from alvinchow.redis.lock import Lock as Lock, LockTimeoutError
 
+pytestmark = pytest.mark.usefixtures('redis')
+
 
 DefaultLock = partial(Lock, connection_alias='default')
+
+
+@pytest.fixture
+def conn(redis_conn):
+    return redis_conn
 
 
 def test_lock_basic(conn):

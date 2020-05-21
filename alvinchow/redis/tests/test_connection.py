@@ -9,6 +9,8 @@ from alvinchow.redis.connection import (
 )
 from alvinchow.redis.exceptions import RedisConfigurationError
 
+pytestmark = pytest.mark.usefixtures('redis')
+
 
 def test_connection():
     connection = get_connection('default')

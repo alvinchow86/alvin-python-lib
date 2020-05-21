@@ -18,12 +18,12 @@ def initialsetup():
 
 
 @pytest.fixture
-def conn():
+def redis_conn(redis):
     return get_connection(DEFAULT_REDIS_ALIAS)
 
 
-@pytest.yield_fixture(autouse=True)
-def commonsetup():
+@pytest.yield_fixture
+def redis():
     # Clear Redis between tests
     conn = get_connection(DEFAULT_REDIS_ALIAS)
     conn.flushdb()
