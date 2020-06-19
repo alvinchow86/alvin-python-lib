@@ -7,8 +7,9 @@ from dateutil.tz import gettz, UTC
 from sqlalchemy import Column, Integer
 
 from alvinchow.sqlalchemy.types import (
-    UTCDateTime, Text, EnumText, JSONB, JSON
+    UTCDateTime, Text, EnumText, JSONB, JSON, EncryptedText
 )
+from alvinchow.lib.encryption import FernetEngine
 
 
 class Category(Enum):
@@ -30,8 +31,24 @@ def User(Base):
     return User
 
 
+key1 = 'bJQNtzcUHyIhi2_msM3JUWLFDFUbXfgJKqLB2lgI5oU='
+key2 = 'IXIe0MFRXddkpqPzzP5AgQnTxtkNnhPQ6ozI_c2aLLM='
+
+
 @pytest.fixture
-def init_models(User):
+def Secret(Base):
+    class Secret(Base):
+        __tablename__ = 'secret'
+        id = Column(Integer, primary_key=True)
+        secret1 = Column(EncryptedText(engine=FernetEngine(key1), preprocess=lambda x: x.upper()))
+        secret2 = Column(EncryptedText(key=key1))
+        secret3 = Column(EncryptedText(keys=[key1, key2]))
+
+    return Secret
+
+
+@pytest.fixture
+def init_models(User, Secret):
     pass
 
 
@@ -72,3 +89,18 @@ def test_enum_text_type(session, User):
     session.commit()
 
     assert user.category == 'foo'
+
+
+def test_encrypted_text_type(session, Secret):
+    secret = Secret(
+        secret1='foo',
+        secret2='bar',
+        secret3='baz',
+    )
+    session.add(secret)
+    session.commit()
+    secret = session.query(Secret).first()
+
+    assert secret.secret1 == 'FOO'
+    assert secret.secret2 == 'bar'
+    assert secret.secret3 == 'baz'

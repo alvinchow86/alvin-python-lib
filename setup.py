@@ -20,4 +20,7 @@ setup(
     install_requires=[
         'python-dateutil>=2.7'
     ],
+    extras_require={
+        'encryption': ["cryptography>=2.7"],
+    },
 )

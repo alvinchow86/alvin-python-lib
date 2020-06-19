@@ -1,4 +1,5 @@
 from alvinchow.lib.exceptions import BaseException, FieldError, FieldErrorsMixin
+from alvinchow.lib.remote import exceptions as remote_exceptions
 
 
 def test_base_exception():
@@ -23,3 +24,11 @@ def test_field_errors():
     foo = FooFieldError(field_errors=field_errors)
 
     assert foo.field_errors == field_errors
+
+
+def test_remote_exceptions():
+    error = remote_exceptions.BadRequestError(
+        'Bad', code='bad'
+    )
+    assert error.message == 'Bad'
+    assert error.code == 'bad'
