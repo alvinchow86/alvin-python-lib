@@ -1,0 +1,68 @@
+
+name: Unit Tests
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ '*' ]
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:12.3-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: testdb
+        ports:
+          - 5432:5432
+        # needed because the postgres container does not provide a healthcheck
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
+        options: --entrypoint redis-server
+
+    steps:
+    - run: |
+        echo "::set-env name=PIPENV_VENV_IN_PROJECT::1"
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - uses: actions/cache@v2
+      with:
+        path: |
+          ~/.cache/pip
+          ~/.cache/pipenv
+          /home/runner/work/alvinchow-python-lib/alvinchow-python-lib/.venv
+        key: ${{ runner.os }}-pip-v1-${{ hashFiles('**/Pipfile.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-v1-
+
+    - name: Install pipenv
+      id: pipenv-install
+      run: |
+        pip install pipenv
+
+    - name: Install dependencies
+      run: |
+        pipenv sync --dev
+
+    - name: Lint with flake8
+      run: |
+        pipenv run flake8 .
+
+    - name: Test with pytest
+      run: |
+        pipenv run python runtests.py --coverage
+      env:
+        DATABASE_URL: postgres://postgres:postgres@localhost/testdb
+        REDIS_URL: 'redis://localhost'
