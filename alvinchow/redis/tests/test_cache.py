@@ -15,7 +15,12 @@ def test_cache_set_get():
     cache = get_cache("default")
     cache.set('foo', 'bar')
     assert cache.get('foo') == 'bar'
+    assert cache.exists('foo') is True
     assert cache.get('asdf') is None
+
+    cache.delete('foo')
+    assert cache.get('foo') is None
+    assert cache.exists('foo') is False
 
     items = [
         123,

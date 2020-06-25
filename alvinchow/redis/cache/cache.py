@@ -30,3 +30,9 @@ class RedisCache:
         except json.JSONDecodeError:
             logger.exception('Problem with JSON decoding')
             return None
+
+    def delete(self, key):
+        return self.connection.delete(key)
+
+    def exists(self, key):
+        return bool(self.connection.exists(key))
