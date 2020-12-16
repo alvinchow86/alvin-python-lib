@@ -24,6 +24,9 @@ def User(Base):
         id = Column(Integer, primary_key=True)
         created_at = Column(UTCDateTime)
         name = Column(Text)
+        description = Column(
+            Text(strip_whitespace=True, replace_multiple_spaces=True)
+        )
         category = Column(EnumText)
         data = Column(JSONB)
         stuff = Column(JSON)
@@ -74,6 +77,10 @@ def test_text_type(session, User):
 
     user1 = session.query(User).filter_by(id=user1.id).first()
     assert user1.name == 'asdf'
+
+    user1.description = " foo   bar "
+    session.commit()
+    assert user1.description == 'foo bar'
 
     user2 = User(name='')
     session.add(user2)

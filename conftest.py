@@ -4,7 +4,7 @@ import pytest
 from alvinchow.redis.connection import configure_connection, get_connection
 
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, configure_mappers
+from sqlalchemy.orm import sessionmaker, configure_mappers, close_all_sessions
 from sqlalchemy.ext.declarative import declarative_base
 
 
@@ -22,7 +22,7 @@ def redis_conn(redis):
     return get_connection(DEFAULT_REDIS_ALIAS)
 
 
-@pytest.yield_fixture
+@pytest.fixture
 def redis():
     # Clear Redis between tests
     conn = get_connection(DEFAULT_REDIS_ALIAS)
@@ -57,7 +57,7 @@ def connection(engine):
     return engine.connect()
 
 
-@pytest.yield_fixture
+@pytest.fixture
 def session(engine, Base, init_models):
     configure_mappers()
     Base.metadata.create_all(engine)
@@ -67,6 +67,6 @@ def session(engine, Base, init_models):
 
     yield session
 
-    session.close_all()
+    close_all_sessions()
     Base.metadata.drop_all(engine)
     engine.dispose()

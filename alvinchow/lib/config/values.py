@@ -1,4 +1,5 @@
 import os
+import json
 
 from alvinchow.lib.config.exceptions import RequiredValueNotSet
 
@@ -66,3 +67,9 @@ class BooleanValue(Value):
 class ListValue(Value):
     def to_python(self, value):
         return [val.strip() for val in value.split(',')]
+
+
+class JSONValue(Value):
+    def to_python(self, value):
+        if value:
+            return json.loads(value)

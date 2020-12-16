@@ -3,15 +3,15 @@ jobs:
   build:
     working_directory: ~/app
     docker:
-      - image: circleci/python:3.8.3 # every job must define an image for the docker executor and subsequent jobs may define a different image.
+      - image: circleci/python:3.9 # every job must define an image for the docker executor and subsequent jobs may define a different image.
         environment:
          PIPENV_VENV_IN_PROJECT: true
          DATABASE_URL: postgres://root:@localhost/sqlalchemy_test
-      - image: circleci/postgres:11-alpine-ram
+      - image: circleci/postgres:12-alpine-ram
         environment:
           POSTGRES_USER: root
           POSTGRES_DB: sqlalchemy_test
-      - image: circleci/redis:5.0.3
+      - image: circleci/redis:6-alpine
 
     steps:
       - checkout  # checkout source code to working directory

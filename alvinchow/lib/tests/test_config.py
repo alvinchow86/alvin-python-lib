@@ -3,7 +3,7 @@ import os
 import pytest
 
 from alvinchow.lib.config import Configuration, Value
-from alvinchow.lib.config.values import IntegerValue, FloatValue, BooleanValue, ListValue
+from alvinchow.lib.config.values import IntegerValue, FloatValue, BooleanValue, ListValue, JSONValue
 from alvinchow.lib.config.exceptions import RequiredValueNotSet
 
 
@@ -19,6 +19,7 @@ def test_config_basic(mocker):
         BOOL_VALUE_TRUE = BooleanValue(True)
         BOOL_VALUE_UNKNOWN = BooleanValue()
         LIST_VALUE = ListValue()
+        JSON_VALUE = JSONValue()
 
     config = FooConfig()
     config.setup()
@@ -41,7 +42,8 @@ def test_config_basic(mocker):
         'BOOL_VALUE': 'true',
         'BOOL_VALUE_TRUE': 'false',
         'BOOL_VALUE_UNKNOWN': 'asdf',
-        'LIST_VALUE': 'one,two, three '
+        'LIST_VALUE': 'one,two, three ',  # intentional spaces
+        'JSON_VALUE': '{"foo": "bar"}',
     }
     mocker.patch.dict(os.environ, env)
 
@@ -56,6 +58,7 @@ def test_config_basic(mocker):
     assert config.BOOL_VALUE_TRUE is False
     assert config.BOOL_VALUE_UNKNOWN is None
     assert config.LIST_VALUE == ['one', 'two', 'three']
+    assert config.JSON_VALUE == {'foo': 'bar'}
 
     assert config.values['DB_URL'] == 'localhost'
 

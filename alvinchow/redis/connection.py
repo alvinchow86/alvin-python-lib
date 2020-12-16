@@ -23,7 +23,7 @@ def get_connection(alias):
     return connection
 
 
-def configure_connection(alias: str, host='localhost', port=6379, password='', url=None, **extra_settings):
+def configure_connection(alias: str, host='localhost', port=6379, password='', db=0, url=None, **extra_settings):
     """
     Save Redis connection args (host, credentials) and map them to an "alias"
     """
@@ -33,9 +33,10 @@ def configure_connection(alias: str, host='localhost', port=6379, password='', u
         host = url_parsed.hostname or host
         port = url_parsed.port or port
         password = url_parsed.password or password
+        db = url_parsed.path.lstrip('/') or db
 
     connection_configs[alias] = dict(
-        host=host, port=port, password=password, **extra_settings
+        host=host, port=port, password=password, db=db, **extra_settings
     )
 
 

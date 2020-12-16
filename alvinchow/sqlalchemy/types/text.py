@@ -1,6 +1,10 @@
 from enum import Enum
+import re
 
 from sqlalchemy import types
+
+
+MULTIPLE_SPACE_REGEX = re.compile(r'\s+')
 
 
 class Text(types.TypeDecorator):
@@ -8,8 +12,25 @@ class Text(types.TypeDecorator):
 
     impl = types.Text
 
+    def __init__(
+        self,
+        strip_whitespace=False,
+        replace_multiple_spaces=False,
+        **kwargs
+    ):
+        super().__init__(**kwargs)
+        self.strip_whitespace = strip_whitespace
+        self.replace_multiple_spaces = replace_multiple_spaces
+
     def process_bind_param(self, value, dialect):
-        value = value or None
+        if value:
+            if self.strip_whitespace:
+                value = value.strip()
+            if self.replace_multiple_spaces:
+                value = MULTIPLE_SPACE_REGEX.sub(' ', value)
+
+        else:
+            value = None
         return value
 
 

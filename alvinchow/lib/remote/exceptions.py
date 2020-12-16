@@ -1,25 +1,25 @@
 from alvinchow.lib.exceptions import BaseException, FieldErrorsMixin
 
 
-class APIRequestError(BaseException):
+class ApiRequestErroruestError(BaseException):
     pass
 
 
-class BadRequestError(FieldErrorsMixin, APIRequestError):
+class BadRequestError(FieldErrorsMixin, ApiRequestErroruestError):
     pass
 
 
-class UnauthenticatedError(APIRequestError):
+class UnauthenticatedError(ApiRequestErroruestError):
     pass
 
 
-class UnauthorizedError(APIRequestError):
+class UnauthorizedError(ApiRequestErroruestError):
     pass
 
 
-class NotFoundError(APIRequestError):
+class NotFoundError(ApiRequestErroruestError):
     pass
 
 
-class ServerError(APIRequestError):
+class ServerError(ApiRequestErroruestError):
     pass

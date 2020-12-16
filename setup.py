@@ -21,6 +21,6 @@ setup(
         'python-dateutil>=2.7'
     ],
     extras_require={
-        'encryption': ["cryptography>=2.7"],
+        'encryption': ["cryptography>=3.2"],
     },
 )
