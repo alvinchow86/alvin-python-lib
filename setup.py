@@ -1,7 +1,7 @@
 from setuptools import setup
 
 # get version
-version = '0.0.3'
+version = '0.0.4'
 
 setup(
     name='alvin-python-lib',
@@ -14,8 +14,14 @@ setup(
         'alvinchow/redis',
         'alvinchow/sqlalchemy',
         'alvinchow/sqlalchemy/types',
+        'alvinchow/pytest',
     ],
     package_data={},
+    entry_points={
+        'pytest11': [
+            'alvinchow = alvinchow.pytest.plugin',
+        ],
+    },
     scripts=[],
     install_requires=[
         'python-dateutil>=2.7'
