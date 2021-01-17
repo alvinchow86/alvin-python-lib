@@ -1,7 +1,7 @@
 from setuptools import setup
 
 # get version
-version = '0.0.4'
+version = '0.0.5'
 
 setup(
     name='alvin-python-lib',
@@ -12,6 +12,7 @@ setup(
         'alvinchow/lib/config',
         'alvinchow/lib/remote',
         'alvinchow/redis',
+        'alvinchow/redis/cache',
         'alvinchow/sqlalchemy',
         'alvinchow/sqlalchemy/types',
         'alvinchow/pytest',
